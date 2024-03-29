@@ -752,5 +752,38 @@ namespace SIT.Manager.Classes
                 });
             }
         }
+
+        /// <summary>
+        /// Compares two version strings.
+        /// </summary>
+        /// <param name="version1">The first version string to compare.</param>
+        /// <param name="version2">The second version string to compare.</param>
+        /// <returns>
+        /// Returns 1 if version1 is greater than version2.
+        /// Returns -1 if version1 is less than version2.
+        /// Returns 0 if both versions are equal.
+        /// </returns>
+        /// <remarks>
+        /// This method splits the version strings by '.' and compares each part from left to right.
+        /// If a version string has more parts than the other, the extra parts are considered as 0.
+        /// </remarks>
+        public static int CompareVersions(string version1, string version2)
+        {
+            var parts1 = version1.Split('.');
+            var parts2 = version2.Split('.');
+
+            int length = Math.Max(parts1.Length, parts2.Length);
+
+            for (int i = 0; i < length; i++)
+            {
+                int v1 = i < parts1.Length ? int.Parse(parts1[i]) : 0;
+                int v2 = i < parts2.Length ? int.Parse(parts2[i]) : 0;
+
+                if (v1 > v2) return 1;
+                if (v1 < v2) return -1;
+            }
+
+            return 0;
+        }
     }
 }

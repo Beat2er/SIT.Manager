@@ -54,6 +54,18 @@ namespace SIT.Manager.Controls
             string tarkovBuild = App.ManagerConfig.TarkovVersion.Split(".").Last();
             string sitVersionTargetBuild = sitVersionTarget.Split(".").Last();
 
+            if (Utils.CompareVersions(tarkovBuild, sitVersionTargetBuild) < 0)
+            {
+                Loggy.LogToFile(string.Format("Tarkov build is version %s, while SIT requires %s.", tarkovBuild, sitVersionTargetBuild));
+                // add a message to the mirror box
+                providerLinks.Add("The installed Tarkov version is lower than the SPT required version. Please update Tarkov.", "");
+                MirrorBox.DataContext = providerLinks;
+                MirrorBox.ItemsSource = providerLinks;
+                
+                MirrorBox.SelectedIndex = 0;
+                return;
+            }
+
             GiteaRelease compatibleDowngradePatcher = null;
 
             foreach (var release in giteaReleases)
